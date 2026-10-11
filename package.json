@@ -42,6 +42,17 @@
     "auto-continue"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omerdduran/opencode-goal-loop.git"
+  },
+  "homepage": "https://github.com/omerdduran/opencode-goal-loop#readme",
+  "bugs": {
+    "url": "https://github.com/omerdduran/opencode-goal-loop/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=20",
     "opencode": ">=1.18.29"

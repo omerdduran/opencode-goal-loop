@@ -1,5 +1,9 @@
 # opencode-goal-loop
 
+[![CI](https://github.com/omerdduran/opencode-goal-loop/actions/workflows/ci.yml/badge.svg)](https://github.com/omerdduran/opencode-goal-loop/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/opencode-goal-loop.svg)](https://www.npmjs.com/package/opencode-goal-loop)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A durable, guarded **goal loop** for [OpenCode](https://opencode.ai). Set a
 goal and the agent keeps working — auto-continuing whenever it goes idle — until
 the goal is verified complete, a blocker is reported, or a safety limit is hit.
@@ -291,6 +295,43 @@ loaded from both the global directory and a project's `.opencode/plugins/`.
 (OpenCode 1.18.29+ / 2.x call one or both of `server` and `setup` for a package
 that exposes both; the plugin claims activation once — V1 via `server`, V2 via
 `setup`.)
+
+## Releasing
+
+Releases are automated with GitHub Actions.
+
+- **`ci.yml`** runs `typecheck`, `test`, `build`, and `pack:check` on every push
+  to `main` and every pull request, across Node 22, 24, and 26.
+- **`release.yml`** runs [release-please](https://github.com/googleapis/release-please).
+  It reads [Conventional Commits](https://www.conventionalcommits.org) and opens
+  a "release PR" that bumps the version and updates `CHANGELOG.md`. Merging that
+  PR creates the git tag and GitHub Release, and the same workflow then publishes
+  to npm with OIDC **trusted publishing** — no tokens stored, provenance attached.
+
+So a release is just: merge a `feat:`/`fix:` PR, then merge the release PR that
+release-please opens. For a one-off manual release, use `npm version <patch|minor|major>`
+and push the tag (the trusted publisher must allow direct `npm publish`).
+
+### One-time npm setup
+
+Add a Trusted Publisher for the package on npmjs.com
+(**Package → Settings → Trusted publishing**) with:
+
+| Field | Value |
+|---|---|
+| Organization or user | `omerdduran` |
+| Repository | `opencode-goal-loop` |
+| Workflow filename | `release.yml` |
+| Allowed actions | enable **`npm publish`** (Allow npm publish) |
+
+The workflow filename must match exactly (case-sensitive, `.yml` included) and
+the first publish must succeed within 2 days, otherwise the configuration expires.
+
+### Development requirements
+
+The published package is plain JavaScript, but the test suite imports the
+TypeScript sources directly, so running this repo's tests requires **Node 22.18+**
+(type stripping on by default).
 
 ## Limitations
 

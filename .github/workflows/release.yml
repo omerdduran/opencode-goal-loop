@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  # Opens/updates a "release PR" from Conventional Commits. Merging it tags the
+  # release and writes CHANGELOG.md + bumps package.json.
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          config-file: .release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  # Runs only when release-please cut a release. Publishes to npm via OIDC
+  # trusted publishing; provenance is generated automatically.
+  #
+  # One-time setup on npmjs.com: add a Trusted Publisher for
+  #   omerdduran / opencode-goal-loop / workflow: release.yml
+  # and enable "Allow npm publish".
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # required for OIDC trusted publishing
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      # No NODE_AUTH_TOKEN: the CLI exchanges the OIDC token automatically.
+      - run: npm publish
