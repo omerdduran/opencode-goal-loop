@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/omerdduran/opencode-goal-loop/compare/v0.1.0...v0.1.1) (2026-10-11)
+
+
+### Bug Fixes
+
+* correct the Node requirement for running the test suite ([874641d](https://github.com/omerdduran/opencode-goal-loop/commit/874641d128076dba74ee421ae27a89d93f524c41))
+
 ## 0.1.0
 
 Initial release.
