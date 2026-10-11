@@ -4,6 +4,17 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
+    ignore:
+      # @opencode-ai/plugin@1.18.35 pins zod to exactly 4.1.8, so our `^4.1.8`
+      # dedupes to a single copy and the $ZodType-based ToolDefinition.args types
+      # line up. Any bump installs a second zod copy whose $ZodType brands are
+      # nominally incompatible:
+      #   src/v1/tools.ts(43,7): error TS2322: Type 'ZodString' is not assignable
+      #   to type '$ZodType<...>'
+      # Ignore only versions above the pinned line, so 4.1.x security updates
+      # still come through. Remove this once the SDK relaxes its pin.
+      - dependency-name: "zod"
+        versions: [">=4.2.0"]
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
