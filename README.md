@@ -248,6 +248,11 @@ npm run build
 node dist/verify.js
 ```
 
+Running the suite needs **Node.js 22.18 or newer**: the tests import the
+TypeScript sources directly, and type stripping is only on by default from
+22.18. (`engines.node >= 20` describes the built package, which is plain
+JavaScript.)
+
 **Against a real OpenCode** — this repo ships a loader at
 `.opencode/plugins/opencode-goal-loop.ts` that re-exports the built plugin, so
 you can dogfood it directly:
