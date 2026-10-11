@@ -1,0 +1,58 @@
+{
+  "name": "opencode-goal-loop",
+  "version": "0.1.0",
+  "description": "Durable, guarded goal loop for OpenCode. Set a goal and the agent auto-continues until it is complete, surviving context compaction.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "opencode-goal-loop": "./dist/verify.js"
+  },
+  "files": [
+    "dist",
+    "examples",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test test/",
+    "test:coverage": "node --test --experimental-test-coverage test/",
+    "check": "npm run typecheck && npm test",
+    "pack:check": "npm pack --dry-run",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "agent",
+    "goal",
+    "autonomous",
+    "auto-continue"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20",
+    "opencode": ">=1.18.29"
+  },
+  "devDependencies": {
+    "@opencode-ai/plugin": "1.18.35",
+    "@opencode/plugin": "2.0.26",
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  },
+  "dependencies": {
+    "zod": "^4.1.8"
+  }
+}
