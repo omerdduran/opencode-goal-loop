@@ -60,6 +60,17 @@ not run the config hook, declare it explicitly:
 
 Restart OpenCode after editing the config.
 
+To use the pre-release build straight from GitHub (no npm publish needed):
+
+```jsonc
+{
+  "plugins": ["github:omerdduran/opencode-goal-loop"]
+}
+```
+
+npm installs the git dependency and runs the `prepare` script, which builds
+`dist/` automatically.
+
 ## Usage
 
 Set a goal:
